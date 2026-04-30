@@ -1,0 +1,8 @@
+/* main {
+    background-color: red !important;
+} */
+
+.dashboard-wrapper {
+    background-color: red; /* or your red if testing */
+    min-height: 100vh;
+}
