@@ -1,0 +1,63 @@
+{% extends "dashboard/base.html" %}
+
+{% block title %}{{ post.title }}{% endblock %}
+
+{% block content %}
+
+<div class="card shadow-sm">
+
+    <div class="card-body">
+
+        <h2 class="fw-bold mb-4">
+            {{ post.title }}
+        </h2>
+
+        <p>
+            <strong>Posted by:</strong>
+            {{ post.author.userprofile.display_name }}
+        </p>
+
+        <p>
+            <strong>Date:</strong>
+            {{ post.shift_date }}
+        </p>
+
+        <p>
+            <strong>Time:</strong>
+            {{ post.start_time }} - {{ post.end_time }}
+        </p>
+
+        <p>
+            <strong>Location:</strong>
+            {{ post.location }}
+        </p>
+
+        <p>
+            <strong>Status:</strong>
+            {{ post.status }}
+        </p>
+
+        {% if post.selected_user %}
+
+            <p>
+                <strong>Awarded To:</strong>
+                {{ post.selected_user.userprofile.display_name }}
+            </p>
+
+        {% endif %}
+
+        {% if post.note %}
+
+            <hr>
+
+            <p>
+                {{ post.note }}
+            </p>
+
+        {% endif %}
+
+    </div>
+
+</div>
+
+{% endblock %}

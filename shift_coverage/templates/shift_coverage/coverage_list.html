@@ -1,0 +1,227 @@
+{% extends "dashboard/base.html" %}
+
+{% block title %}Shift Coverage Board{% endblock %}
+
+{% block content %}
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    
+    <h2 class="fw-bold">
+        Shift Coverage Board
+    </h2><br>
+
+    <a href="{% url 'shift_coverage:create' %}" class="btn btn-primary">
+        + Post Shift
+    </a>
+
+</div>
+
+<p>This is <strong>not</strong> an official coverage board. Upon awarding a shift you must go into UKG to confirm the shift request.</p>
+
+{% for post in posts %}
+
+    <div class="card shadow-sm mb-4">
+
+        <div class="card-body">
+
+            <div class="d-flex justify-content-between align-items-start">
+
+                <div>
+
+                    <h4 class="fw-bold mb-3">
+                        {{ post.title }}
+                    </h4>
+
+                    <p class="mb-1">
+                        <strong>Date:</strong>
+                        {{ post.shift_date }}
+                    </p>
+
+                    <p class="mb-1">
+                        <strong>Time:</strong>
+                        {{ post.start_time }} - {{ post.end_time }}
+                    </p>
+
+                    <p class="mb-1">
+                        <strong>Location:</strong>
+                        {{ post.location }}
+                    </p>
+
+                    {% if post.selected_user %}
+                        <p class="mb-1">
+                            <strong>Awarded to:</strong>
+                            {{ post.selected_user.userprofile.display_name }}
+                        </p>
+                    {% endif %}
+
+                </div>
+
+                <div>
+                    {% if post.status == "covered" %}
+                        <span class="badge bg-success">Covered</span>
+                    {% elif post.status == "cancelled" %}
+                        <span class="badge bg-danger">Closed</span>
+                    {% else %}
+                        <span class="badge bg-primary">Open</span>
+                    {% endif %}
+                </div>
+
+            </div>
+
+            {% if post.note %}
+                <hr>
+
+                <p class="mb-3">
+                    {{ post.note }}
+                </p>
+            {% endif %}
+
+            <small class="text-muted">
+                {% if post.author.userprofile.profile_picture %}
+
+    <img src="{{ post.author.userprofile.profile_picture.url }}"
+         class="rounded-circle border"
+         style="width: 42px; height: 42px; object-fit: cover;">
+
+{% else %}
+
+    <div class="rounded-circle bg-secondary-subtle border d-inline-flex align-items-center justify-content-center"
+         style="width: 42px; height: 42px;">
+
+        PFP
+
+    </div>
+
+{% endif %}
+                <strong>{{ post.author.userprofile.display_name }}</strong>
+                on
+                {{ post.created_at }}
+            </small>
+
+            {% if post.interested_users.all %}
+                <div class="mt-4">
+
+                    <strong>Interested Users:</strong>
+
+                    <ul class="mt-2 mb-0">
+
+                        {% for user in post.interested_users.all %}
+
+                            <li class="mb-2 no-bullets">
+                                {% if user.userprofile.profile_picture %}
+
+    <img src="{{ user.userprofile.profile_picture.url }}"
+         class="rounded-circle border"
+         style="width: 42px; height: 42px; object-fit: cover;">
+
+{% else %}
+
+    <div class="rounded-circle bg-secondary-subtle border d-inline-flex align-items-center justify-content-center"
+         style="width: 42px; height: 42px;">
+
+        PFP
+
+    </div>
+
+{% endif %}
+                                {{ user.userprofile.display_name }}
+
+                                {% if post.status == "open" and request.user == post.author %}
+                                    <form method="POST"
+                                          action="{% url 'shift_coverage:select' post.id user.id %}"
+                                          class="d-inline ms-2">
+                                        {% csrf_token %}
+
+                                        <button class="btn btn-sm btn-success">
+                                            Award Shift
+                                        </button>
+                                    </form>
+                                {% endif %}
+                            </li>
+
+                        {% endfor %}
+
+                    </ul>
+
+                </div>
+            {% endif %}
+
+            {% if request.user != post.author and post.status == "open" %}
+
+                <div class="mt-4">
+
+                    {% if request.user not in post.interested_users.all %}
+
+                        <form method="POST"
+                              action="{% url 'shift_coverage:interested' post.id %}">
+                            {% csrf_token %}
+
+                            <button class="btn btn-success">
+                                I'm Interested
+                            </button>
+                        </form>
+
+                    {% else %}
+
+                        <form method="POST"
+                              action="{% url 'shift_coverage:withdraw' post.id %}">
+                            {% csrf_token %}
+
+                            <button class="btn btn-outline-danger">
+                                Withdraw Interest
+                            </button>
+                        </form>
+
+                    {% endif %}
+
+                </div>
+
+            {% endif %}
+
+            {% if request.user == post.author or request.user.is_superuser %}
+
+    <div class="mt-4 d-flex gap-2 flex-wrap">
+
+        <a href="{% url 'shift_coverage:edit' post.id %}"
+           class="btn btn-outline-primary">
+            Edit Ticket
+        </a>
+
+        {% if post.status == "open" %}
+            <form method="POST"
+                  action="{% url 'shift_coverage:close' post.id %}">
+                {% csrf_token %}
+
+                <button class="btn btn-outline-danger">
+                    Close Ticket
+                </button>
+            </form>
+        {% endif %}
+
+        <form method="POST"
+              action="{% url 'shift_coverage:delete' post.id %}"
+              onsubmit="return confirm('Are you sure you want to permanently delete this post?');">
+            {% csrf_token %}
+
+            <button class="btn btn-danger">
+                Delete Permanently
+            </button>
+        </form>
+
+    </div>
+
+{% endif %}
+
+        </div>
+
+    </div>
+
+{% empty %}
+
+    <div class="alert alert-light border shadow-sm">
+        No shift coverage posts yet.
+    </div>
+
+{% endfor %}
+
+{% endblock %}

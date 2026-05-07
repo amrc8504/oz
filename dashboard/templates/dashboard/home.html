@@ -1,52 +1,52 @@
 {% extends "dashboard/base.html" %}
 
-{% block title %}Home{% endblock %}
+{% block title %}Work Dashboard{% endblock %}
 
 {% block content %}
 
-<div class="row g-5">
+<h2 class="mb-4 fw-bold">Work Dashboard</h2>
 
-    <div class="col-12 col-md-6">
-        <a href="#" class="text-decoration-none text-dark">
-            <div class="card shadow-sm h-100">
-                <div class="card-body d-flex align-items-center justify-content-center"
-                     style="min-height: 220px;">
-                    <h3>To-do List</h3>
-                </div>
-            </div>
+<div class="row g-4">
+
+    <div class="col-12 col-md-6 col-xl-4">
+        <a href="{% url 'shift_coverage:list' %}" class="dashboard-card">
+            <h4>Shift Coverage Board</h4>
+            <p>Post shifts you need covered and see who is interested.</p>
         </a>
     </div>
 
-    <div class="col-12 col-md-6">
-        <a href="#" class="text-decoration-none text-dark">
-            <div class="card shadow-sm h-100">
-                <div class="card-body d-flex align-items-center justify-content-center"
-                     style="min-height: 220px;">
-                    <h3>Training Checklist</h3>
-                </div>
-            </div>
+    <div class="col-12 col-md-6 col-xl-4">
+        <a href="{% url 'discussions:list' %}" class="dashboard-card">
+            <h4>Discussion Boards</h4>
+            <p>Post updates, ask questions, and comment.</p>
         </a>
     </div>
 
-    <div class="col-12 col-md-6">
-        <a href="#" class="text-decoration-none text-dark">
-            <div class="card shadow-sm h-100">
-                <div class="card-body d-flex align-items-center justify-content-center"
-                     style="min-height: 220px;">
-                    <h3>Employees</h3>
-                </div>
-            </div>
+    <div class="col-12 col-md-6 col-xl-4">
+        <a href="{% url 'announcements:list' %}" class="dashboard-card">
+            <h4>Announcements</h4>
+            <p>Submit announcements for admin approval.</p>
         </a>
     </div>
 
-    <div class="col-12 col-md-6">
-        <a href="#" class="text-decoration-none text-dark">
-            <div class="card shadow-sm h-100">
-                <div class="card-body d-flex align-items-center justify-content-center"
-                     style="min-height: 220px;">
-                    <h3>Reports</h3>
-                </div>
-            </div>
+    <div class="col-12 col-md-6 col-xl-4">
+        <a href="{% url 'messaging:messages' %}" class="dashboard-card">
+            <h4>Messages</h4>
+            <p>Send private or group messages.</p>
+        </a>
+    </div>
+
+    <div class="col-12 col-md-6 col-xl-4">
+        <a href="{% url 'union_meetings:home' %}" class="dashboard-card">
+            <h4>Union Meetings</h4>
+            <p>Meeting info, notes, and resources.</p>
+        </a>
+    </div>
+
+    <div class="col-12 col-md-6 col-xl-4">
+        <a href="{% url 'profiles:profile' %}" class="dashboard-card">
+            <h4>Profile</h4>
+            <p>Update your picture, username, and password.</p>
         </a>
     </div>
 

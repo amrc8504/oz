@@ -1,0 +1,98 @@
+{% extends "dashboard/base.html" %}
+
+{% block title %}Profile{% endblock %}
+
+{% block content %}
+
+<div class="container" style="max-width: 800px;">
+
+    <div class="card shadow-sm">
+
+        <div class="card-body p-4">
+
+            <div class="d-flex align-items-center gap-4 mb-4">
+
+                {% if request.user.userprofile.profile_picture %}
+
+                    <img src="{{ request.user.userprofile.profile_picture.url }}"
+                         class="rounded-circle border"
+                         style="width: 120px; height: 120px; object-fit: cover;">
+
+                {% else %}
+
+                    <div class="rounded-circle bg-secondary-subtle border d-flex align-items-center justify-content-center"
+                         style="width: 120px; height: 120px;">
+
+                        No PFP
+
+                    </div>
+
+                {% endif %}
+
+                <div>
+
+                    <h2 class="fw-bold mb-2">
+
+                        {{ request.user.userprofile.display_name }}
+
+                    </h2>
+
+                    {% if request.user.is_superuser %}
+
+                        <span class="badge bg-danger">
+                            Superuser
+                        </span>
+
+                    {% endif %}
+
+                    {% for group in request.user.groups.all %}
+
+                        <span class="badge bg-warning text-dark">
+                            {{ group.name }}
+                        </span>
+
+                    {% endfor %}
+
+                </div>
+
+            </div>
+
+            <form method="POST"
+                  enctype="multipart/form-data">
+
+                {% csrf_token %}
+
+                <h4 class="fw-bold mb-3">
+                    Account Information
+                </h4>
+
+                {{ user_form.as_p }}
+
+                <h4 class="fw-bold mt-4 mb-3">
+                    Profile Picture
+                </h4>
+
+                {{ profile_form.as_p }}
+
+                <button class="btn btn-primary">
+                    Save Changes
+                </button>
+
+            </form>
+
+            <hr class="my-4">
+
+            <a href="{% url 'password_change' %}"
+               class="btn btn-success">
+
+                Change Password
+
+            </a>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

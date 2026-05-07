@@ -1,0 +1,180 @@
+{% extends "dashboard/base.html" %}
+
+{% block title %}Union Meetings{% endblock %}
+
+{% block content %}
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+
+    <h2 class="fw-bold">
+        Union Meetings
+    </h2>
+
+    {% if can_edit_union_page %}
+
+        <a href="{% url 'union_meetings:edit' %}"
+           class="btn btn-warning">
+
+            Edit Union Meeting Info
+
+        </a>
+
+    {% endif %}
+
+</div>
+
+<div class="card shadow-sm border-warning mb-5">
+
+    <div class="card-body text-center p-5">
+
+        <h3 class="fw-bold mb-4">
+            Upcoming Meeting
+        </h3>
+
+        <div class="display-3 fw-bold text-warning mb-3">
+
+            {% if meeting_info.meeting_date %}
+
+                {{ meeting_info.meeting_date }}
+
+            {% else %}
+
+                TBD
+
+            {% endif %}
+
+        </div>
+
+        <p class="lead text-muted mb-0">
+            Meeting information will be updated here.
+        </p>
+
+    </div>
+
+</div>
+
+<div class="row g-4">
+
+    <div class="col-12 col-md-6">
+
+        <div class="card shadow-sm h-100">
+
+            <div class="card-body p-4">
+
+                <h4 class="fw-bold mb-3">
+                    Meeting Location
+                </h4>
+
+                <p class="mb-0">
+
+                    {% if meeting_info.location %}
+
+                        {{ meeting_info.location }}
+
+                    {% else %}
+
+                        Meeting location details will appear here.
+
+                    {% endif %}
+
+                </p>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="col-12 col-md-6">
+
+        <div class="card shadow-sm h-100">
+
+            <div class="card-body p-4">
+
+                <h4 class="fw-bold mb-3">
+                    Agenda
+                </h4>
+
+                <p class="mb-0">
+
+                    {% if meeting_info.agenda %}
+
+                        {{ meeting_info.agenda }}
+
+                    {% else %}
+
+                        Upcoming agenda items will be listed here.
+
+                    {% endif %}
+
+                </p>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="col-12 col-md-6">
+
+        <div class="card shadow-sm h-100">
+
+            <div class="card-body p-4">
+
+                <h4 class="fw-bold mb-3">
+                    Past Meeting Notes
+                </h4>
+
+                <p class="mb-0">
+
+                    {% if meeting_info.past_meeting_notes %}
+
+                        {{ meeting_info.past_meeting_notes }}
+
+                    {% else %}
+
+                        Notes from previous meetings can be archived here.
+
+                    {% endif %}
+
+                </p>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="col-12 col-md-6">
+
+        <div class="card shadow-sm h-100">
+
+            <div class="card-body p-4">
+
+                <h4 class="fw-bold mb-3">
+                    Union Contacts
+                </h4>
+
+                <p class="mb-0">
+
+                    {% if meeting_info.union_contacts %}
+
+                        {{ meeting_info.union_contacts }}
+
+                    {% else %}
+
+                        Steward and representative information can go here.
+
+                    {% endif %}
+
+                </p>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

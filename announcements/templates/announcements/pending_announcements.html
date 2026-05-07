@@ -1,0 +1,76 @@
+{% extends "dashboard/base.html" %}
+
+{% block title %}Pending Announcements{% endblock %}
+
+{% block content %}
+
+<h2 class="fw-bold mb-4">
+    Pending Announcements
+</h2>
+
+{% for announcement in announcements %}
+
+    <div class="card shadow-sm mb-3">
+
+        <div class="card-body">
+
+            <h4 class="fw-bold">
+                {{ announcement.title }}
+            </h4>
+
+            <p>
+                {{ announcement.content }}
+            </p>
+
+            <small class="text-muted">
+
+                Submitted by
+
+                <strong>{{ announcement.author.userprofile.display_name }}</strong>
+
+            </small>
+
+            <div class="d-flex gap-2 mt-3">
+
+    <form method="POST"
+          action="{% url 'announcements:approve' announcement.id %}">
+
+        {% csrf_token %}
+
+        <button class="btn btn-success">
+
+            Approve
+
+        </button>
+
+    </form>
+
+    <form method="POST"
+          action="{% url 'announcements:reject' announcement.id %}"
+          onsubmit="return confirm('Reject and permanently delete this announcement?');">
+
+        {% csrf_token %}
+
+        <button class="btn btn-outline-danger">
+
+            Reject
+
+        </button>
+
+    </form>
+
+</div>
+
+        </div>
+
+    </div>
+
+{% empty %}
+
+    <div class="alert alert-light border">
+        No pending announcements.
+    </div>
+
+{% endfor %}
+
+{% endblock %}
