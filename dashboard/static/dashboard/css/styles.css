@@ -1,3 +1,8 @@
+html {
+    min-height: 100%;
+    background: transparent;
+}
+
 body {
     margin: 0;
     min-height: 100vh;
@@ -38,10 +43,6 @@ body::after {
         text-align: center;
     }
 
-    .navbar-brand img {
-        height: 34px;
-    }
-
     .dashboard-wrapper {
         padding-top: 2rem !important;
     }
@@ -60,7 +61,8 @@ body::after {
 }
 
 .navbar {
-    min-height: 80px;
+    min-height: 72px;
+    overflow: visible;
 }
 
 .dashboard-wrapper {
@@ -177,4 +179,61 @@ body::after {
     list-style: none;
     padding-left: 0;
     margin-bottom: 0;
+}
+
+@media (max-width: 576px) {
+    body::before,
+    body::after {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+    }
+}
+
+.navbar-logo {
+    height: 72px;
+    width: auto;
+    object-fit: contain;
+
+    transform: scale(1.35);
+    transform-origin: left center;
+}
+
+@media (max-width: 576px) {
+
+    .navbar .navbar-brand .navbar-logo {
+        height: 76px !important;
+        max-height: none !important;
+        width: auto !important;
+        transform: scale(1.25);
+        transform-origin: center;
+    }
+
+    .navbar {
+        min-height: 76px;
+        overflow: visible;
+    }
+}
+
+@media (max-width: 576px) {
+
+    .navbar {
+        padding-top: 0.5rem !important;
+        padding-bottom: 0.5rem !important;
+    }
+
+    .navbar-logo {
+        height: 80px !important;
+        width: auto !important;
+        transform: scale(1.2);
+        transform-origin: left center;
+    }
+
+    .navbar .dropdown img,
+    .navbar .rounded-circle {
+        width: 52px !important;
+        height: 52px !important;
+    }
 }
