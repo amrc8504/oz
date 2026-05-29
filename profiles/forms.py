@@ -4,7 +4,7 @@ from django.contrib.auth.forms import (
     UserCreationForm,
     AuthenticationForm,
 )
-
+from django.conf import settings
 from .models import UserProfile
 
 class LoginForm(AuthenticationForm):
@@ -40,12 +40,14 @@ class RegisterForm(UserCreationForm):
 
     username = forms.CharField(
         widget=forms.TextInput(
-            attrs={"class": "form-control"}
+            attrs={
+                "class": "form-control",
+                "autofocus": False,
+            }
         )
     )
 
     email = forms.EmailField(
-        required=False,
         widget=forms.EmailInput(
             attrs={"class": "form-control"}
         )
@@ -62,6 +64,11 @@ class RegisterForm(UserCreationForm):
             attrs={"class": "form-control"}
         )
     )
+    
+    access_code = forms.CharField(
+        widget = forms.PasswordInput(attrs={"class": "form-control"}),
+        label = "Access Code"
+    )
 
     class Meta:
         model = User
@@ -73,7 +80,24 @@ class RegisterForm(UserCreationForm):
             "email",
             "password1",
             "password2",
+            "access_code",
         ]
+        
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        
+        self.fields["username"].widget.attrs.pop(
+            "autofocus",
+            None
+        )
+        
+    def clean_access_code(self):
+        access_code = self.cleaned_data.get("access_code")
+
+        if access_code != settings.REGISTRATION_ACCESS_CODE:
+            raise forms.ValidationError("Invalid access code.")
+
+        return access_code
 
 
 class UserUpdateForm(forms.ModelForm):

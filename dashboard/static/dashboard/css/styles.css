@@ -237,3 +237,7 @@ body::after {
         height: 52px !important;
     }
 }
+
+.errorlist {
+    display: none;
+}

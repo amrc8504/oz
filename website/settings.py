@@ -29,6 +29,8 @@ SECRET_KEY = os.environ.get(
     "django-insecure-dev-key"
 )
 
+REGISTRATION_ACCESS_CODE = os.environ.get("REGISTRATION_ACCESS_CODE", "")
+
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.environ.get("DEBUG", "False") == "True"
 

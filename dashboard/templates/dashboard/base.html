@@ -194,6 +194,42 @@
     </div>
 </nav>
 
+{% if messages %}
+    <div class="toast-container position-fixed top-0 end-0 p-3"
+         style="z-index: 1100; margin-top: 90px;">
+
+        {% for message in messages %}
+
+            <div class="toast show align-items-center border-0 shadow-sm
+                        {% if message.tags == 'success' %}
+                            text-bg-success
+                        {% elif message.tags == 'error' %}
+                            text-bg-danger
+                        {% else %}
+                            text-bg-primary
+                        {% endif %}"
+                 role="alert">
+
+                <div class="d-flex">
+
+                    <div class="toast-body">
+                        {{ message }}
+                    </div>
+
+                    <button type="button"
+                            class="btn-close btn-close-white me-2 m-auto"
+                            data-bs-dismiss="toast">
+                    </button>
+
+                </div>
+
+            </div>
+
+        {% endfor %}
+
+    </div>
+{% endif %}
+
     <!-- FULL WIDTH BACKGROUND -->
     <main class="dashboard-wrapper py-5">
         

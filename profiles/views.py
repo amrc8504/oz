@@ -1,10 +1,13 @@
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
+from django.contrib.auth.views import LoginView
 from django.contrib.auth import login
+from django.contrib import messages
 from .forms import (
     UserUpdateForm,
     ProfileUpdateForm,
     RegisterForm,
+    LoginForm,
 )
 
 
@@ -57,8 +60,31 @@ def register(request):
         if form.is_valid():
             user = form.save()
             login(request, user)
+
+            messages.success(request, "Account created successfully.")
+
             return redirect("dashboard:home")
+        else:
+            messages.error(request, "Something went wrong. Please check the form and try again.")
     else:
         form = RegisterForm()
 
     return render(request, "profiles/register.html", {"form": form})
+
+class CustomLoginView(LoginView):
+    template_name = "registration/login.html"
+    authentication_form = LoginForm
+
+    def form_invalid(self, form):
+        messages.error(
+            self.request,
+            "Invalid username or password. Please try again."
+        )
+        return super().form_invalid(form)
+
+    def form_valid(self, form):
+        messages.success(
+            self.request,
+            "Logged in successfully."
+        )
+        return super().form_valid(form)
